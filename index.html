@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./pages/index.css">
+    <title>Mesto Russia</title>
+    </head>
+
+  <body>
+    <div class="page">
+      <header class="header">
+        <img class="logo" src="./images/header-logo.svg" alt="Логотип">
+      </header>
+      
+      <main class="content">
+        <section class="profile"> <img class="profile__avatar" alt="Аватар" src="./images/profile-avatar.jpg">
+          <div class="profile__profile-info">
+            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <button class="profile__edit-button"></button>
+            <p class="profile__about">Исследователь океана</p>
+          </div>
+          <button class="profile__add-button"></button>
+        </section>
+        
+        <section class="elements">
+          <article class="element"> 
+            <img class="element__image" alt="Судак" src="./images/element-sudak.jpg">
+            <div class="element__caption">
+              <p class="element__title">Судак</p>
+              <img class="element__like" alt="like" src="./images/element-like.svg">
+            </div>
+          </article>
+          <article class="element"> 
+            <img class="element__image" alt="Новороссийск" src="./images/element-novorossiysk.jpg">
+            <div class="element__caption">
+              <p class="element__title">Новороссийск</p>
+              <img class="element__like" alt="like" src="./images/element-like.svg">
+            </div>
+          </article>
+          <article class="element"> 
+            <img class="element__image" alt="Роза Хутор" src="./images/element-rosa-khutor.jpg">
+            <div class="element__caption">
+              <p class="element__title">Роза Хутор</p>
+              <img class="element__like" alt="like" src="./images/element-like.svg">
+            </div>
+          </article>
+          <article class="element"> 
+            <img class="element__image" alt="Смоленск" src="./images/element-smolensk.jpg">
+            <div class="element__caption">
+              <p class="element__title">Смоленск</p>
+              <img class="element__like" alt="like" src="./images/element-like.svg">
+            </div>
+          </article>
+          <article class="element"> 
+            <img class="element__image" alt="Сочи" src="./images/element-sochi.jpg">
+            <div class="element__caption">
+              <p class="element__title">Сочи</p>
+              <img class="element__like" alt="like" src="./images/element-like.svg">
+            </div>
+          </article>
+          <article class="element"> 
+            <img class="element__image" alt="Карачаевск" src="./images/element-karachaevsk.jpg">
+            <div class="element__caption">
+              <p class="element__title">Карачаево-Черкессия</p>
+              <img class="element__like" alt="like" src="./images/element-like.svg">
+            </div>
+          </article>
+        </section>
+        
+        <section class="popup">
+          <form class="popup__container">
+            <h2 class="popup__title">Редактировать профиль</h2>
+            <input class="popup__input popup__input_type_name" type="text"/>
+            <input class="popup__input popup__input_type_about" type="text"/>
+            <button class="popup__save-button" type="submit">Сохранить</button>
+            <span class="popup__close-icon"></span>
+          </form>
+        </section>
+      </main>
+      <footer class="footer">&copy; 2020 Mesto Russia</footer>
+    </div>
+  <script src="scripts/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+.element__like {
+  max-width: 21px;
+  width: 100%;
+  transition: .3s;
+}
+
+.element__like:hover {
+  opacity: .5;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1150px) {
+  .element__like {
+    max-width: 21px;
+    max-height: 18px;
+  }
+}
