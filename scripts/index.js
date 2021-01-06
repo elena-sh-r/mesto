@@ -8,35 +8,25 @@ let name = document.querySelector('.profile__name');
 let about = document.querySelector('.profile__about');
 
 function handleOpenButtonClick() {
-  let nameText = name.textContent;
-  let aboutText = about.textContent;
-  
-  nameInput.value = nameText;
-  aboutInput.value = aboutText;
+  nameInput.value = name.textContent;
+  aboutInput.value = about.textContent;
   
   popup.classList.add('popup_opened');
-}
-
-function handleCloseButtonClick() {
-  closePopup();
-}
-
-function handleFormSubmit(evt) {
-  evt.preventDefault();
-  
-  let nameText = nameInput.value;
-  let aboutText = aboutInput.value;
-  
-  name.textContent = nameText;
-  about.textContent = aboutText;
-  
-  closePopup();
 }
 
 function closePopup() {
   popup.classList.remove('popup_opened');
 }
 
-openButton.addEventListener('click', handleOpenButtonClick)
-closeButton.addEventListener('click', handleCloseButtonClick)
+function handleFormSubmit(evt) {
+  evt.preventDefault();
+  
+  name.textContent = nameInput.value;
+  about.textContent = aboutInput.value;
+  
+  closePopup();
+}
+
+openButton.addEventListener('click', handleOpenButtonClick);
+closeButton.addEventListener('click', closePopup);
 formElement.addEventListener('submit', handleFormSubmit);

@@ -6,3 +6,9 @@
   justify-content: center;
   margin: 0 auto;
 }
+
+@media screen and (max-width: 1050px) {
+  .elements {
+    padding: 35px 0 0 0;
+  }
+}
