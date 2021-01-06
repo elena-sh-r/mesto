@@ -18,4 +18,4 @@
 * реализовать добавление фотографий;
 
 ## Ссылка на проект
-https://elena-sh-r.github.io/mesto/index.html
+https://elena-sh-r.github.io/mesto/
