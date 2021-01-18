@@ -1,7 +1,7 @@
 const openButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_type_profile');
-const closeButton = document.querySelector('.popup_type_profile__close-icon');
-const formProfile = document.querySelector('.popup_type_profile__container');
+const closeButton = document.querySelector('.popup__close-icon_type_profile');
+const formProfile = document.querySelector('.popup__container_type_profile');
 const nameInput = document.querySelector('.popup__input_type_name');
 const aboutInput = document.querySelector('.popup__input_type_about');
 const name = document.querySelector('.profile__name');
@@ -70,11 +70,11 @@ const elementTemplate = document.querySelector('.element-template').content;
 const elementsList = document.querySelector('.elements');
 const addButton = document.querySelector('.profile__add-button');
 const popupElement = document.querySelector('.popup_type_element');
-const closeElementButton = document.querySelector('.popup_type_element__close-icon');
-const formElement = document.querySelector('.popup_type_element__container');
+const closeElementButton = document.querySelector('.popup__close-icon_type_element');
+const formElement = document.querySelector('.popup__container_type_element');
 const titleInput = document.querySelector('.popup__input_type_title');
 const linkInput = document.querySelector('.popup__input_type_image-link');
-const closeImageButton = document.querySelector('.popup_type_image__close-icon');
+const closeImageButton = document.querySelector('.popup__close-icon_type_image');
 
 function handleAddButtonClick() {
   titleInput.value = linkInput.value = '';
