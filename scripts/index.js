@@ -1,6 +1,6 @@
-const openButton = document.querySelector('.profile__edit-button');
+const profilePopupOpenButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_type_profile');
-const closeButton = document.querySelector('.popup__close-icon_type_profile');
+const profilePopupCloseButton = document.querySelector('.popup__close-icon_type_profile');
 const formProfile = document.querySelector('.popup__container_type_profile');
 const nameInput = document.querySelector('.popup__input_type_name');
 const aboutInput = document.querySelector('.popup__input_type_about');
@@ -8,18 +8,22 @@ const name = document.querySelector('.profile__name');
 const about = document.querySelector('.profile__about');
 const popupMaximized = document.querySelector('.popup_type_image');
 
-function handleOpenButtonClick() {
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+}
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
+
+function handleProfilePopupOpen() {
   nameInput.value = name.textContent;
   aboutInput.value = about.textContent;
   
-  popupProfile.classList.add('popup_opened');
+  openPopup(popupProfile);
 }
 
-function closePopup() {
-  popupProfile.classList.remove('popup_opened');
-}
-
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const nameInputValue = nameInput.value;
   const aboutInputValue = aboutInput.value;
@@ -32,12 +36,12 @@ function handleFormSubmit(evt) {
   name.textContent = nameInputValue;
   about.textContent = aboutInputValue;
 
-  closePopup();
+  closePopup(popupProfile);
 }
 
-openButton.addEventListener('click', handleOpenButtonClick);
-closeButton.addEventListener('click', closePopup);
-formProfile.addEventListener('submit', handleFormSubmit);
+profilePopupOpenButton.addEventListener('click', handleProfilePopupOpen);
+profilePopupCloseButton.addEventListener('click', () => closePopup(popupProfile));
+formProfile.addEventListener('submit', handleProfileFormSubmit);
 
 const initialCards = [
   {
@@ -69,23 +73,21 @@ const initialCards = [
 const elementTemplate = document.querySelector('.element-template').content;
 const elementsList = document.querySelector('.elements');
 const addButton = document.querySelector('.profile__add-button');
-const popupElement = document.querySelector('.popup_type_element');
+const cardAddPopup = document.querySelector('.popup_type_element');
 const closeElementButton = document.querySelector('.popup__close-icon_type_element');
-const formElement = document.querySelector('.popup__container_type_element');
+const cardAddForm = document.querySelector('.popup__container_type_element');
 const titleInput = document.querySelector('.popup__input_type_title');
 const linkInput = document.querySelector('.popup__input_type_image-link');
 const closeImageButton = document.querySelector('.popup__close-icon_type_image');
 
 function handleAddButtonClick() {
-  titleInput.value = linkInput.value = '';
-  popupElement.classList.add('popup_opened');
+  titleInput.value = ''; 
+  linkInput.value = ''; 
+  
+  openPopup(cardAddPopup);
 }
 
-function closeElementPopup() {
-  popupElement.classList.remove('popup_opened');
-}
-
-function renderItem(item){
+function createCard(item) {
   const elementItem = elementTemplate.cloneNode(true);
   const elementImage = elementItem.querySelector('.element__image');
   const elementTitle = elementItem.querySelector('.element__title');
@@ -96,11 +98,15 @@ function renderItem(item){
   elementLike.addEventListener('click', handleElementLike);
   elementImage.addEventListener('click', handleElementImageMaximize);
   
-  elementImage.setAttribute('src', item.link);
-  elementImage.setAttribute('alt', item.name);
+  elementImage.src = item.link;
+  elementImage.alt = item.name;
   elementTitle.textContent = item.name;
+  
+  return elementItem;
+}
 
-  elementsList.prepend(elementItem);
+function renderItem(item){
+  elementsList.prepend(createCard(item));
 }
 
 function render(){
@@ -114,7 +120,7 @@ function handleElementFormSubmit(evt) {
   const name = titleInput.value;
   const link = linkInput.value;
   
-  if (!(name && link && link.startsWith('http'))) {
+  if (!(name && link)) {
     alert('Введены некорректные данные!');
     return;
   }
@@ -126,22 +132,17 @@ function handleElementFormSubmit(evt) {
     }
   );
 
-  closeElementPopup();
+  closePopup(cardAddPopup);
 }
 
 function handleElementDelete(evt) {
-  evt.target.parentElement.remove();
+  evt.target.closest('.element').remove();
 }
 
 function handleElementLike(evt) {
   const activeClassName = 'element__like_active';
   
-  if (evt.target.classList.contains(activeClassName)) {
-    evt.target.classList.remove(activeClassName);
-  }
-  else {
-    evt.target.classList.add(activeClassName);
-  }
+  evt.target.classList.toggle(activeClassName);
 }
 
 function handleElementImageMaximize(evt) {
@@ -152,17 +153,13 @@ function handleElementImageMaximize(evt) {
   popupImage.setAttribute('alt', evt.target.getAttribute('alt'));
   popupCaption.textContent = evt.target.getAttribute('alt');
   
-  popupMaximized.classList.add('popup_opened');
-}
-
-function closeImagePopup() {
-  popupMaximized.classList.remove('popup_opened');
+  openPopup(popupMaximized);
 }
 
 addButton.addEventListener('click', handleAddButtonClick);
-closeElementButton.addEventListener('click', closeElementPopup);
-formElement.addEventListener('submit', handleElementFormSubmit);
-closeImageButton.addEventListener('click', closeImagePopup);
+closeElementButton.addEventListener('click', () => closePopup(cardAddPopup));
+cardAddForm.addEventListener('submit', handleElementFormSubmit);
+closeImageButton.addEventListener('click', () => closePopup(popupMaximized));
 
 render();
 
