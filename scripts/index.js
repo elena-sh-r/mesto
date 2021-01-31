@@ -12,6 +12,14 @@ function openPopup(popup) {
   popup.classList.add('popup_opened');
 }
 
+function closePopupOnOverlay(popup, evt) {
+  if(evt.target != popup) {
+    return;
+  }
+  
+  closePopup(popup);
+}
+
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
@@ -25,13 +33,9 @@ function handleProfilePopupOpen() {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
+  
   const nameInputValue = nameInput.value;
   const aboutInputValue = aboutInput.value;
-  
-  if (!(nameInputValue && aboutInputValue)){
-    alert('Введены некорректные данные!');
-    return;
-  }
   
   name.textContent = nameInputValue;
   about.textContent = aboutInputValue;
@@ -39,9 +43,19 @@ function handleProfileFormSubmit(evt) {
   closePopup(popupProfile);
 }
 
+function closePopupOnEsc(popups, evt) {
+  console.log(popups);
+  if (evt.key === 'Escape') {
+    popups.forEach((popup) => closePopup(popup));
+  }
+}
+
 profilePopupOpenButton.addEventListener('click', handleProfilePopupOpen);
 profilePopupCloseButton.addEventListener('click', () => closePopup(popupProfile));
 formProfile.addEventListener('submit', handleProfileFormSubmit);
+popupProfile.addEventListener('click', (evt) => closePopupOnOverlay(popupProfile, evt));
+popupProfile.addEventListener('keydown', (evt) => closePopupOnEsc(popupProfile, evt));
+window.addEventListener('keydown', (evt) => closePopupOnEsc([popupProfile, cardAddPopup, popupMaximized], evt));
 
 const initialCards = [
   {
@@ -120,11 +134,6 @@ function handleElementFormSubmit(evt) {
   const name = titleInput.value;
   const link = linkInput.value;
   
-  if (!(name && link)) {
-    alert('Введены некорректные данные!');
-    return;
-  }
-  
   renderItem(
     {
       name: name,
@@ -160,6 +169,10 @@ addButton.addEventListener('click', handleAddButtonClick);
 closeElementButton.addEventListener('click', () => closePopup(cardAddPopup));
 cardAddForm.addEventListener('submit', handleElementFormSubmit);
 closeImageButton.addEventListener('click', () => closePopup(popupMaximized));
+cardAddPopup.addEventListener('click', (evt) => closePopupOnOverlay(cardAddPopup, evt));
+popupMaximized.addEventListener('click', (evt) => closePopupOnOverlay(popupMaximized, evt));
+cardAddPopup.addEventListener('keydown', (evt) => closePopupOnEsc(cardAddPopup, evt));
+popupMaximized.addEventListener('keydown', (evt) => closePopupOnEsc(popupMaximized, evt));
 
 render();
 
