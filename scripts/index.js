@@ -10,6 +10,7 @@ const popupMaximized = document.querySelector('.popup_type_image');
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEscape);
 }
 
 function closePopupOnOverlay(popup, evt) {
@@ -22,6 +23,7 @@ function closePopupOnOverlay(popup, evt) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEscape);
 }
 
 function handleProfilePopupOpen() {
@@ -43,10 +45,10 @@ function handleProfileFormSubmit(evt) {
   closePopup(popupProfile);
 }
 
-function closePopupOnEsc(popups, evt) {
-  console.log(popups);
+function closeByEscape(evt) {
   if (evt.key === 'Escape') {
-    popups.forEach((popup) => closePopup(popup));
+    const openedPopup = document.querySelector('.popup_opened')
+    closePopup(openedPopup);
   }
 }
 
@@ -55,7 +57,6 @@ profilePopupCloseButton.addEventListener('click', () => closePopup(popupProfile)
 formProfile.addEventListener('submit', handleProfileFormSubmit);
 popupProfile.addEventListener('click', (evt) => closePopupOnOverlay(popupProfile, evt));
 popupProfile.addEventListener('keydown', (evt) => closePopupOnEsc(popupProfile, evt));
-window.addEventListener('keydown', (evt) => closePopupOnEsc([popupProfile, cardAddPopup, popupMaximized], evt));
 
 const initialCards = [
   {
@@ -93,6 +94,8 @@ const cardAddForm = document.querySelector('.popup__container_type_element');
 const titleInput = document.querySelector('.popup__input_type_title');
 const linkInput = document.querySelector('.popup__input_type_image-link');
 const closeImageButton = document.querySelector('.popup__close-icon_type_image');
+const popupImage = document.querySelector('.popup__image');
+const popupCaption = document.querySelector('.popup__caption');
 
 function handleAddButtonClick() {
   titleInput.value = ''; 
@@ -110,7 +113,7 @@ function createCard(item) {
   
   elementDeleteButton.addEventListener('click', handleElementDelete);
   elementLike.addEventListener('click', handleElementLike);
-  elementImage.addEventListener('click', handleElementImageMaximize);
+  elementImage.addEventListener('click', () => handleElementImageMaximize(item));
   
   elementImage.src = item.link;
   elementImage.alt = item.name;
@@ -154,13 +157,10 @@ function handleElementLike(evt) {
   evt.target.classList.toggle(activeClassName);
 }
 
-function handleElementImageMaximize(evt) {
-  const popupImage = document.querySelector('.popup__image');
-  const popupCaption = document.querySelector('.popup__caption');
-  
-  popupImage.setAttribute('src', evt.target.getAttribute('src'));
-  popupImage.setAttribute('alt', evt.target.getAttribute('alt'));
-  popupCaption.textContent = evt.target.getAttribute('alt');
+function handleElementImageMaximize(item) {
+  popupImage.setAttribute('src', item.link);
+  popupImage.setAttribute('alt', item.name);
+  popupCaption.textContent = item.name;
   
   openPopup(popupMaximized);
 }
