@@ -1,3 +1,10 @@
+// импорты
+import { openPopup, closePopupOnOverlay, closePopup, closeByEscape } from './utils.js'
+import { initialCards, formSelectors } from './constants.js'
+import { Card } from './Card.js'
+import { FormValidator } from './FormValidator.js'
+
+// переменные для работы с попапом профиля
 const profilePopupOpenButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_type_profile');
 const profilePopupCloseButton = document.querySelector('.popup__close-icon_type_profile');
@@ -6,34 +13,31 @@ const nameInput = document.querySelector('.popup__input_type_name');
 const aboutInput = document.querySelector('.popup__input_type_about');
 const name = document.querySelector('.profile__name');
 const about = document.querySelector('.profile__about');
+
+// переменные для работы с попапом добавления карточки
+const addButton = document.querySelector('.profile__add-button');
+const cardAddPopup = document.querySelector('.popup_type_element');
+const closeElementButton = document.querySelector('.popup__close-icon_type_element');
+const titleInput = document.querySelector('.popup__input_type_title');
+const linkInput = document.querySelector('.popup__input_type_image-link');
+const cardAddForm = document.querySelector('.popup__container_type_element');
+const cardList = document.querySelector('.elements');
+
+// переменные для работы с попапом развернутой картинки
 const popupMaximized = document.querySelector('.popup_type_image');
+const closeImageButton = document.querySelector('.popup__close-icon_type_image');
 
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', closeByEscape);
-}
-
-function closePopupOnOverlay(popup, evt) {
-  if(evt.target != popup) {
-    return;
-  }
-  
-  closePopup(popup);
-}
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeByEscape);
-}
-
-function handleProfilePopupOpen() {
+// функции-обработчики событий
+// функция открытия попапа редактирования профиля
+const  handleProfilePopupOpen = () => {
   nameInput.value = name.textContent;
   aboutInput.value = about.textContent;
   
   openPopup(popupProfile);
 }
 
-function handleProfileFormSubmit(evt) {
+// отправка данных формы редактирования профиля
+const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
   
   const nameInputValue = nameInput.value;
@@ -45,134 +49,56 @@ function handleProfileFormSubmit(evt) {
   closePopup(popupProfile);
 }
 
-function closeByEscape(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened')
-    closePopup(openedPopup);
-  }
-}
-
-profilePopupOpenButton.addEventListener('click', handleProfilePopupOpen);
-profilePopupCloseButton.addEventListener('click', () => closePopup(popupProfile));
-formProfile.addEventListener('submit', handleProfileFormSubmit);
-popupProfile.addEventListener('click', (evt) => closePopupOnOverlay(popupProfile, evt));
-popupProfile.addEventListener('keydown', (evt) => closePopupOnEsc(popupProfile, evt));
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-const elementTemplate = document.querySelector('.element-template').content;
-const elementsList = document.querySelector('.elements');
-const addButton = document.querySelector('.profile__add-button');
-const cardAddPopup = document.querySelector('.popup_type_element');
-const closeElementButton = document.querySelector('.popup__close-icon_type_element');
-const cardAddForm = document.querySelector('.popup__container_type_element');
-const titleInput = document.querySelector('.popup__input_type_title');
-const linkInput = document.querySelector('.popup__input_type_image-link');
-const closeImageButton = document.querySelector('.popup__close-icon_type_image');
-const popupImage = document.querySelector('.popup__image');
-const popupCaption = document.querySelector('.popup__caption');
-
-function handleAddButtonClick() {
+// открытие попапа добавления карточки
+const handleAddButtonClick = () => {
   titleInput.value = ''; 
   linkInput.value = ''; 
   
   openPopup(cardAddPopup);
 }
 
-function createCard(item) {
-  const elementItem = elementTemplate.cloneNode(true);
-  const elementImage = elementItem.querySelector('.element__image');
-  const elementTitle = elementItem.querySelector('.element__title');
-  const elementDeleteButton = elementItem.querySelector('.element__delete');
-  const elementLike = elementItem.querySelector('.element__like');
-  
-  elementDeleteButton.addEventListener('click', handleElementDelete);
-  elementLike.addEventListener('click', handleElementLike);
-  elementImage.addEventListener('click', () => handleElementImageMaximize(item));
-  
-  elementImage.src = item.link;
-  elementImage.alt = item.name;
-  elementTitle.textContent = item.name;
-  
-  return elementItem;
+// функция создания и добавления карточки в грид
+const addCardToList = (name, link) => {
+  const card = new Card(name, link, popupMaximized);
+  const cardElement = card.generateCard();
+
+  cardList.prepend(cardElement);
 }
 
-function renderItem(item){
-  elementsList.prepend(createCard(item));
-}
+// добавление в грид карточек из массива
+initialCards.forEach((item) => {
+  addCardToList(item.name, item.link);
+});
 
-function render(){
-  initialCards.reverse().forEach(renderItem);
-}
-
-function handleElementFormSubmit(evt) {
+// функция добавления карточки из формы
+const handleElementFormSubmit = (evt) => {
   evt.preventDefault();
-  
 
-  const name = titleInput.value;
-  const link = linkInput.value;
-  
-  renderItem(
-    {
-      name: name,
-      link: link,
-    }
-  );
+  addCardToList(titleInput.value, linkInput.value);
 
   closePopup(cardAddPopup);
 }
 
-function handleElementDelete(evt) {
-  evt.target.closest('.element').remove();
-}
+// функция создания экземпляров валидатора для каждой формы
+const profileFormValidator = new FormValidator(formSelectors, formProfile);
+profileFormValidator.enableValidation();
 
-function handleElementLike(evt) {
-  const activeClassName = 'element__like_active';
-  
-  evt.target.classList.toggle(activeClassName);
-}
+const cardAddFormValidator = new FormValidator(formSelectors, cardAddForm);
+cardAddFormValidator.enableValidation();
 
-function handleElementImageMaximize(item) {
-  popupImage.setAttribute('src', item.link);
-  popupImage.setAttribute('alt', item.name);
-  popupCaption.textContent = item.name;
-  
-  openPopup(popupMaximized);
-}
+// добавление обработчиков событий
+// для попапа редактирования профиля
+profilePopupOpenButton.addEventListener('click', handleProfilePopupOpen);
+profilePopupCloseButton.addEventListener('click', () => closePopup(popupProfile));
+popupProfile.addEventListener('click', (evt) => closePopupOnOverlay(popupProfile, evt));
+formProfile.addEventListener('submit', handleProfileFormSubmit);
 
+//для попапа добавления картинки
 addButton.addEventListener('click', handleAddButtonClick);
 closeElementButton.addEventListener('click', () => closePopup(cardAddPopup));
-cardAddForm.addEventListener('submit', handleElementFormSubmit);
-closeImageButton.addEventListener('click', () => closePopup(popupMaximized));
 cardAddPopup.addEventListener('click', (evt) => closePopupOnOverlay(cardAddPopup, evt));
+cardAddForm.addEventListener('submit', handleElementFormSubmit);
+
+// для попапа открытия картинки
+closeImageButton.addEventListener('click', () => closePopup(popupMaximized));
 popupMaximized.addEventListener('click', (evt) => closePopupOnOverlay(popupMaximized, evt));
-cardAddPopup.addEventListener('keydown', (evt) => closePopupOnEsc(cardAddPopup, evt));
-popupMaximized.addEventListener('keydown', (evt) => closePopupOnEsc(popupMaximized, evt));
-
-render();
-
