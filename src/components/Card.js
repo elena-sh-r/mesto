@@ -1,12 +1,9 @@
-// импорты
-import { openPopup, closePopupOnOverlay, closePopup, closeByEscape } from './utils.js'
-
 // класс карточки
 export class Card {
-  constructor(name, link, popupMaximized) {
+  constructor(name, link, handleCardClick) {
     this._name = name;
     this._link = link;
-    this._popupMaximized = popupMaximized;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -39,7 +36,7 @@ export class Card {
     });
 
     this._element.querySelector('.element__image').addEventListener('click', () => {
-      this._handleElementImageMaximize();
+      this._handleCardClick({name: this._name, link: this._link});
     });
   }  
 
@@ -49,16 +46,5 @@ export class Card {
 
   _handleElementDelete() {
     this._element.remove();
-  }
-
-  _handleElementImageMaximize() {
-
-    const popupImage = document.querySelector('.popup__image');
-    const popupCaption = document.querySelector('.popup__caption');
-
-    popupImage.setAttribute('src', this._link);
-    popupImage.setAttribute('alt', this._name);
-    popupCaption.textContent = this._name;
-    openPopup(this._popupMaximized);
   }
 }
