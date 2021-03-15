@@ -4,23 +4,24 @@ export class PopupWithForm extends Popup {
   constructor(popupSelector, submitCallback) {
     super(popupSelector);
     this._submitCallback = submitCallback;
+    this._inputs = this._popup.querySelectorAll('.popup__input');
+    this._form = this._popup.querySelector('.form');
   }
 
   setEventListeners() {
     super.setEventListeners();
 
-    const form = this._getPopup().querySelector('.form');
-    form.addEventListener('submit', (evt) => this._handleFormSubmit(evt));
+    this._form.addEventListener('submit', (evt) => this._handleFormSubmit(evt));
   }
 
   close() {
     super.close();
 
-    this._getInputs().forEach(input => input.value = '');
+    this._form.reset();
   }
 
   setInputValues(inputValues) {
-    this._getInputs().forEach(input => {
+    this._inputs.forEach(input => {
       input.value = inputValues[input.name];
     });
   }
@@ -28,7 +29,7 @@ export class PopupWithForm extends Popup {
   _getInputValues() {
     this._inputValues = {};
 
-    this._getInputs().forEach(input => this._inputValues[input.name] = input.value);
+    this._inputs.forEach(input => this._inputValues[input.name] = input.value);
 
     return this._inputValues;
   }
@@ -40,12 +41,4 @@ export class PopupWithForm extends Popup {
 
     this.close();
   }
-
-  _getPopup() {
-    return document.querySelector(this._popupSelector);
-  }
-
-  _getInputs() {
-    return this._getPopup().querySelectorAll('.popup__input');
-  }  
 }

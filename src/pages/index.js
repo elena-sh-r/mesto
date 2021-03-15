@@ -22,7 +22,7 @@ const handleElementImageMaximize = ({name, link}) => {
 
 // функция создания и добавления карточки в грид
 const renderCard = (item) => {
-  const card = new Card(item.name, item.link, handleElementImageMaximize);
+  const card = new Card(item, '.element-template', handleElementImageMaximize);
   const cardElement = card.generateCard();
 
   return cardElement;
@@ -30,7 +30,7 @@ const renderCard = (item) => {
 
 // объект класса, отрисовка элементов на странице
 const section = new Section({
-  items: initialCards, 
+  data: initialCards, 
   renderer: renderCard
 }, 
 '.elements'
@@ -39,6 +39,7 @@ section.renderItems();
 
 // функция открытия попапа редактирования профиля
 const  handleProfilePopupOpen = () => {
+  profileFormValidator.resetValidation();
   profilePopup.setInputValues(userInfo.getUserInfo());
   profilePopup.open();
 }
@@ -64,6 +65,7 @@ imagePopup.setEventListeners();
 
 // открытие попапа добавления карточки
 const handleAddButtonClick = () => {
+  cardAddFormValidator.resetValidation();
   cardAddPopup.open();
 }
 

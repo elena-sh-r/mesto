@@ -1,9 +1,9 @@
 // класс, который отвечает за отрисовку элементов на странице
 export class Section {
-  constructor({ items, renderer }, containerSelector) {
-    this._items = items;
+  constructor({ data, renderer }, containerSelector) {
+    this._items = data;
     this._renderer = renderer;
-    this._containerSelector = containerSelector;
+    this._container = document.querySelector(containerSelector);
   }
 
   renderItems() {
@@ -13,8 +13,6 @@ export class Section {
   }
 
   addItem(element) {
-    const container = document.querySelector(this._containerSelector);
-
-    container.prepend(element);
+    this._container.prepend(element);
   }
 }

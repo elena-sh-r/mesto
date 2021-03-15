@@ -1,14 +1,15 @@
-// класс карточки
+// класс, который возвращает разметку карточки
 export class Card {
-  constructor(name, link, handleCardClick) {
-    this._name = name;
-    this._link = link;
+  constructor(data, cardSelector, handleCardClick) {
+    this._name = data.name;
+    this._link = data.link;
+    this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
     const cardElement = document
-    .querySelector('.element-template')
+    .querySelector(this._cardSelector)
     .content
     .querySelector('.element')
     .cloneNode(true);
@@ -20,8 +21,11 @@ export class Card {
     this._element = this._getTemplate();
     this._setEventListeners();
 
+    const elementImage = this._element.querySelector('.element__image');
+
     this._element.querySelector('.element__title').textContent = this._name;
-    this._element.querySelector('.element__image').src = this._link;
+    elementImage.src = this._link;
+    elementImage.alt = this._name;
   
     return this._element;
   }

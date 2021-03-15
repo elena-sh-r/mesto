@@ -3,6 +3,16 @@ export class FormValidator {
   constructor(formSelectors, formElement) {
     this._formSelectors = formSelectors;
     this._formElement = formElement;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._formSelectors.inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._formSelectors.submitButtonSelector);
+  }
+
+  resetValidation() {
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+
+    this._toggleButtonState(this._inputList, this._buttonElement);
   }
 
   // показ ошибки
@@ -49,19 +59,16 @@ export class FormValidator {
 
   // навешивание обработчиков
   _setEventListeners() {
-    const inputList = Array.from(this._formElement.querySelectorAll(this._formSelectors.inputSelector));
-    const buttonElement = this._formElement.querySelector(this._formSelectors.submitButtonSelector);
-    
-    if(!inputList || !buttonElement) {
+    if(!this._inputList || !this._buttonElement) {
       return;
     }
     
-    this._toggleButtonState(inputList, buttonElement);
+    this._toggleButtonState(this._inputList, this._buttonElement);
 
-    inputList.forEach((inputElement) => {
+    this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._isValid(inputElement);
-        this._toggleButtonState(inputList, buttonElement);
+        this._toggleButtonState(this._inputList, this._buttonElement);
       });
     });
   };
