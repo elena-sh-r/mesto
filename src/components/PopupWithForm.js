@@ -6,6 +6,8 @@ export class PopupWithForm extends Popup {
     this._submitCallback = submitCallback;
     this._inputs = this._popup.querySelectorAll('.popup__input');
     this._form = this._popup.querySelector('.form');
+    this._saveButton = this._popup.querySelector('.popup__save-button');
+    this._defaultButtonText = this._saveButton.textContent;
   }
 
   setEventListeners() {
@@ -18,6 +20,8 @@ export class PopupWithForm extends Popup {
     super.close();
 
     this._form.reset();
+
+    this.resetButtonText();
   }
 
   setInputValues(inputValues) {
@@ -38,7 +42,13 @@ export class PopupWithForm extends Popup {
     evt.preventDefault();
 
     this._submitCallback(this._getInputValues());
+  }
 
-    this.close();
+  setButtonText(text){
+    this._saveButton.textContent = text;
+  }
+
+  resetButtonText(){
+    this._saveButton.textContent = this._defaultButtonText;
   }
 }

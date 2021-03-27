@@ -15,7 +15,12 @@ module.exports = {
     contentBase: path.resolve(__dirname, './dist'),
     compress: true,
     port: 8080,
-    open: true
+    open: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': '*',
+    }
   },
   module: {
     rules: [
