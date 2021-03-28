@@ -9,8 +9,8 @@ export class PopupForDelete extends Popup {
     
   }
 
-  open(id) {
-    this._id = id;
+  open(card) {
+    this._card = card;
     this._confirmButton.addEventListener('click', this._handleConfirmButtonClick);
 
     super.open();
@@ -26,6 +26,6 @@ export class PopupForDelete extends Popup {
   }
 
   _handleConfirmButtonClick() {
-    this._handleButtonClick(this._id);
+    this._handleButtonClick(this._card);
   }
 }

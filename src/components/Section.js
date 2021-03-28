@@ -14,12 +14,4 @@ export class Section {
   addItem(element) {
     this._container.prepend(element);
   }
-
-  removeItem(id){
-    document.getElementById(id).remove();
-  }
-
-  changeItem(id, element){
-    this._container.replaceChild(element, document.getElementById(id));
-  }
 }

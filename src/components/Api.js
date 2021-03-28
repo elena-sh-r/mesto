@@ -11,7 +11,7 @@ export class Api {
       }
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
@@ -32,7 +32,7 @@ export class Api {
       })  
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
@@ -47,7 +47,7 @@ export class Api {
       }
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
@@ -68,7 +68,7 @@ export class Api {
       })
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
@@ -84,7 +84,7 @@ export class Api {
       }
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
@@ -100,7 +100,7 @@ export class Api {
       }
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
@@ -116,7 +116,7 @@ export class Api {
       }
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
@@ -136,11 +136,15 @@ export class Api {
       })
     })
     .then((res) => {
-      if (res.ok) {
+      if (this._isValidResult(res)) {
         return res.json();
       }
 
       return Promise.reject(`Ошибка: ${res.status}`);
     });
+  }
+
+  _isValidResult(res) {
+    return res.ok;
   }
 }

@@ -27,8 +27,8 @@ const handleElementImageMaximize = ({name, link}) => {
   imagePopup.open(name, link);
 }
 
-const handleElementDelete = ({id}) => {
-  deletePopup.open(id);
+const handleElementDelete = (card) => {
+  deletePopup.open(card);
 }
 
 // функция создания и добавления карточки в грид
@@ -90,11 +90,11 @@ const handleElementFormSubmit = ({name, link}) => {
 }
 
 // функция удаления карточки после подтверждения
-const handleDeleteConfirmButtonClick = (id) => {
+const handleDeleteConfirmButtonClick = (card) => {
   deletePopup.setButtonText(processingLabel);
-  api.deleteCard(id)
+  api.deleteCard(card.id)
     .then(() => {
-      section.removeItem(id);
+      card.remove();
       deletePopup.close();
     })
     .catch((err) => {
@@ -104,20 +104,20 @@ const handleDeleteConfirmButtonClick = (id) => {
 }
 
 // функция обновления лайка
-const handleElementLike = (id, isLiked) => {
-  if (isLiked){
-    api.deleteCardLike(id)
-      .then((card) => {
-        section.changeItem(id, renderCard(card));
+const handleElementLike = (card) => {
+  if (card.likesContainId(userInfo.getUserInfo().id)){
+    api.deleteCardLike(card.id)
+      .then((data) => {
+        card.changeLikes(data.likes, false);
       })
       .catch((err) => {
         console.log(err);
       });
   }
   else {
-    api.setCardLike(id)
-      .then((card) => {
-        section.changeItem(id, renderCard(card));
+    api.setCardLike(card.id)
+      .then((data) => {
+        card.changeLikes(data.likes, true);
       })
       .catch((err) => {
         console.log(err);
@@ -184,17 +184,10 @@ avatarContainer.addEventListener('click', handleAvatarPopupOpen);
 
 // получение информации о профиле, аватара и списка карточек 
 window.onload = () => {
-  api.getOwnerInfo()
-    .then((owner) => {
+  Promise.all([api.getOwnerInfo(), api.getCards()])
+    .then(([owner, cards]) => {
       userInfo.setUserInfo(owner);
       userInfo.setAvatar(owner.avatar);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  api.getCards()
-    .then((cards) => {
       cards.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); 
       section.renderItems(cards);
     })
